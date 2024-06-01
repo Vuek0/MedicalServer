@@ -1,0 +1,22 @@
+{
+  "name": "medicalserver",
+  "version": "1.0.0",
+  "description": "Server for medical website",
+  "main": "index.js",
+  "scripts": {
+    "serve": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vuek0/MedicalServer.git"
+  },
+  "author": "Vueko",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Vuek0/MedicalServer/issues"
+  },
+  "homepage": "https://github.com/Vuek0/MedicalServer#readme",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
