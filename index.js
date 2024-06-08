@@ -1,8 +1,14 @@
+// Import
 const express = require("express");
+const users = require("./routes/users")
+// Middlewares
 const app = express();
-const PORT = 3000;
-app.get("/", (req, res) => res.send("Express on Vercel"));
+app.use(express.json());
 
+// Routes
+app.get("/users", users);
+
+
+// Connection
+const PORT = process.env.PORT || 3333;
 app.listen(PORT, () => console.log(`Server ready on port ${PORT}.`));
-
-module.exports = app;
