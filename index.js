@@ -1,14 +1,15 @@
 // Import
 const express = require("express");
-const users = require("./routes/users")
-// Middlewares
 const app = express();
+const users = require("./routes/users");
+const PORT = process.env.PORT || 3333;
+console.log(process.env);
 app.use(express.json());
+app.use(express.urlencoded({extended: false}));
 
 // Routes
-app.get("/users", users);
-
+app.use('/users', users);
 
 // Connection
-const PORT = process.env.PORT || 3333;
+
 app.listen(PORT, () => console.log(`Server ready on port ${PORT}.`));
