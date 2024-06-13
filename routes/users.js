@@ -31,19 +31,40 @@ router.route('/').get((req, res) => {
         })
     }else if(req.query.key && req.query.key !== process.env.API_KEY){
         res.send("Invalid Api Key");
+        res.statusCode = 403;
     }else if(!req.query.key){
         res.send("Api Key is required")
+        res.statusCode = 403;
     }
 }).post((req, res) => {
     const {name, surname, login, password, type} = req.body;
     if(req.query.key === process.env.API_KEY && name && surname && login && password && type){
-        const user = new User({ name, surname, login, password, type});
-        user.password = md5(user.password).toString();
-        user.save().then(result => res.send(result));
+        let isAllow = true;
+        User
+        .find()
+        .then((users) => {
+            users.forEach(user => {
+                if(user.login == login){
+                    res.status(400).json({status: 400, message: "Login already exists"})
+                    isAllow = false;
+                }
+            })
+            if(isAllow){
+                const user = new User({ name, surname, login, password, type});
+                user.password = md5(user.password).toString();
+                user.save().then(result => res.send(result));
+            }
+        })
+        .catch((error) => {
+            res.send(error);
+        })
+        
     }else if(req.query.key !== process.env.API_KEY){
         res.send("Invalid Api Key");
+        res.statusCode = 403;
     }else{
         res.send("Api Key is required")
+        res.statusCode = 403;
     }
     
 })
