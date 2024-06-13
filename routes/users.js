@@ -31,9 +31,9 @@ router.route('/').get((req, res) => {
         res.send("Api Key is required")
     }
 }).post((req, res) => {
-    const {name, surname, login, password} = req.body;
-    if(req.query.key === process.env.API_KEY && name && surname && login && password){
-        const user = new User({ name, surname, login, password});
+    const {name, surname, login, password, type} = req.body;
+    if(req.query.key === process.env.API_KEY && name && surname && login && password && type == "pacient"){
+        const user = new User({ name, surname, login, password, type});
         user.save().then(result => res.send(result));
     }else if(req.query.key !== process.env.API_KEY){
         res.send("Invalid Api Key");
