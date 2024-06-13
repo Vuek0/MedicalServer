@@ -16,6 +16,7 @@ mongoose.connect(db)
 });
 console.log(db);
 router.route('/').get((req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*")
     if(req.query.key === process.env.API_KEY){
         User
         .find()
