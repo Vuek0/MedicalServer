@@ -16,7 +16,6 @@ mongoose.connect(db)
 });
 console.log(db);
 router.route('/').get((req, res) => {
-    console.log(req.query.key);
     if(req.query.key === process.env.API_KEY){
         User
         .find()
@@ -28,7 +27,7 @@ router.route('/').get((req, res) => {
         })
     }else if(req.query.key && req.query.key !== process.env.API_KEY){
         res.send("Invalid Api Key");
-    }else{
+    }else if(!req.query.key){
         res.send("Api Key is required")
     }
 }).post((req, res) => {
