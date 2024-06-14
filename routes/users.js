@@ -23,6 +23,11 @@ router.route('/').get((req, res) => {
         User
         .find()
         .then((users) => {
+            users.forEach((user, index) => {
+                if(user.login == "admin"){
+                    users.splice(index, 1);
+                }
+            })
             res.json(users);
         })
         .catch((error) => {
