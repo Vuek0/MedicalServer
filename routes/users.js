@@ -37,6 +37,7 @@ router.route('/').get((req, res) => {
         res.statusCode = 403;
     }
 }).post((req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*")
     const {name, surname, login, password, type} = req.body;
     if(req.query.key === process.env.API_KEY && name && surname && login && password && type){
         let isAllow = true;
