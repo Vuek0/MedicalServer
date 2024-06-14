@@ -16,7 +16,6 @@ mongoose.connect(db)
 }).catch(err => {
     console.log(err)
 });
-console.log(md5("123321").toString());
 
 router.route('/').get((req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*")
