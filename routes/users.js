@@ -29,11 +29,9 @@ router.route('/').get((req, res) => {
             res.send(error);
         })
     }else if(req.query.key && req.query.key !== process.env.API_KEY){
-        res.send("Invalid Api Key");
-        res.statusCode = 403;
+        res.status(403).send("Invalid Api Key");
     }else if(!req.query.key){
-        res.send("Api Key is required")
-        res.statusCode = 403;
+        res.status(403).send("Api Key is required")
     }
 }).post((req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*")
@@ -60,11 +58,9 @@ router.route('/').get((req, res) => {
         })
         
     }else if(req.query.key !== process.env.API_KEY){
-        res.send("Invalid Api Key");
-        res.statusCode = 403;
+        res.status(403).send("Invalid Api Key");
     }else{
-        res.send("Api Key is required")
-        res.statusCode = 403;
+        res.status(403).send("Api Key is required")
     }
     
 })
