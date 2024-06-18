@@ -23,10 +23,6 @@ const userSchema = new Schema(
       type: String,
       required: true
     },
-    _id: {
-      type: String,
-      required: false
-    }
   }
 );
 
