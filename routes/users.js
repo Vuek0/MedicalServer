@@ -98,6 +98,7 @@ router.route('/').get((req, res) => {
             res.json({
                 status: 404,
                 error: err,
+                message: "Something happened"
             }).status(404);
         }
     } else if(req.query.key !== process.env.API_KEY){
