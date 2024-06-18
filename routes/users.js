@@ -86,17 +86,18 @@ router.route('/').get((req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     const {_id} = req.body;
     if(req.query.key === process.env.API_KEY){
-        User.findByIdAndDelete(_id, (err, docs) => {
-            if (err) {
-                res.send(err).status(404); 
-                return
-            }
+        try{
+            User.findByIdAndDelete(_id)
             res.json({
-                data: docs,
                 status: 200,
                 response: "Account removed succesfull",
             }).status(200);
-        })
+        } catch(err){
+            res.json({
+                status: 404,
+                error: err,
+            }).status(404);
+        }
     } else if(req.query.key !== process.env.API_KEY){
         res.status(403).send("Invalid Api Key");
     } else{
