@@ -88,7 +88,7 @@ router.route('/').get((req, res) => {
     if(req.query.key === process.env.API_KEY){
         try{
 
-            const deletedItem = await User.findByIdAndDelete(_id);
+            const deletedItem = await User.findByIdAndDelete(mongoose.Types.ObjectId(_id));
             res.json({
                 status: 200,
                 response: "Account removed succesfull",
