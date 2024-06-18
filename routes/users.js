@@ -18,7 +18,7 @@ mongoose.connect(db)
 });
 
 router.route('/').get((req, res) => {
-    res.setHeader("Access-Control-Allow-Origin", "*")
+    res.setHeader("Access-Control-Allow-Origin", "*");
     if(req.query.key === process.env.API_KEY){
         User
         .find()
@@ -34,7 +34,7 @@ router.route('/').get((req, res) => {
         res.status(403).send("Api Key is required")
     }
 }).post((req, res) => {
-    res.setHeader("Access-Control-Allow-Origin", "*")
+    res.setHeader("Access-Control-Allow-Origin", "*");
     const {name, surname, login, password, type} = req.body;
     if(req.query.key === process.env.API_KEY && name && surname && login && password && type){
         let isAllow = true;
@@ -63,6 +63,45 @@ router.route('/').get((req, res) => {
         res.status(403).send("Api Key is required")
     }
     
+}).put((req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    const {password, _id} = req.body;
+    if(req.query.key === process.env.API_KEY && password && _id){
+        
+        User
+        .findByIdAndUpdate(_id, { password : password }, (err, docs)=>{
+            if(err){
+                res.send(err).status(404);
+            } else{
+                res.send(docs).status(200);
+            }
+        })
+        
+    }else if(req.query.key !== process.env.API_KEY){
+        res.status(403).send("Invalid Api Key");
+    }else{
+        res.status(403).send("Api Key is required")
+    }
+}).delete((req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    const {_id} = req.body;
+    if(req.query.key === process.env.API_KEY){
+        User.findByIdAndDelete(_id, (err, docs) => {
+            if (err) {
+                res.send(err).status(404); 
+                return
+            }
+            res.json({
+                data: docs,
+                status: 200,
+                response: "Account removed succesfull",
+            }).status(200);
+        })
+    } else if(req.query.key !== process.env.API_KEY){
+        res.status(403).send("Invalid Api Key");
+    } else{
+        res.status(403).send("Api Key is required")
+    }
 })
 
   

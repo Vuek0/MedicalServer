@@ -22,6 +22,10 @@ const userSchema = new Schema(
     type: {
       type: String,
       required: true
+    },
+    _id: {
+      type: String,
+      required: false
     }
   }
 );
