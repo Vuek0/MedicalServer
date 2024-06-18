@@ -82,15 +82,17 @@ router.route('/').get((req, res) => {
     }else{
         res.status(403).send("Api Key is required")
     }
-}).delete((req, res) => {
+}).delete(async (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     const {_id} = req.body;
     if(req.query.key === process.env.API_KEY){
         try{
-            User.findByIdAndDelete(_id)
+
+            const deletedItem = await User.findByIdAndDelete(_id);
             res.json({
                 status: 200,
                 response: "Account removed succesfull",
+                data: deletedItem,
             }).status(200);
         } catch(err){
             res.json({
