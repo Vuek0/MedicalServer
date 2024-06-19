@@ -107,6 +107,28 @@ router.route('/').get((req, res) => {
         res.status(403).send("Api Key is required")
     }
 })
-
+router.route('/doctors/:type').get((req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    const result = [];
+    if(req.query.key === process.env.API_KEY){
+        User
+        .find()
+        .then((users) => {
+            users.forEach(user => {
+                if(JSON.parse(user.type).specialization === req.params.type){
+                    result.push(user);
+                }
+            })
+            res.send(result).status(200)
+        })
+        .catch((error) => {
+            res.send(error);
+        })
+    } else if(req.query.key !== process.env.API_KEY){
+        res.status(403).send("Invalid Api Key");
+    } else{
+        res.status(403).send("Api Key is required")
+    }
+})
   
 module.exports = router;
