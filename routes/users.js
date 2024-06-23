@@ -43,7 +43,7 @@ router.route('/').get((req, res) => {
                     message: error,
                     status: 404,
 
-                }).status(404)
+                })
             }
         })
         .catch((error) => {
