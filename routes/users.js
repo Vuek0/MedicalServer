@@ -19,11 +19,32 @@ mongoose.connect(db)
 
 router.route('/').get((req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
-    if(req.query.key === process.env.API_KEY){
+    if(req.query.key === process.env.API_KEY && req.query.login && req.query.password){
+        let error;
         User
         .find()
         .then((users) => {
-            res.json(users);
+            let obj;
+            users.forEach(item => {
+                if(item.login === req.query.login){
+                    if(md5(req.query.password).toString() == item.password){ 
+                        obj = item;
+                    } else{
+                    error = "Логин или пароль неверны"
+                    }
+                } else{
+                    if(error!=="Логин или пароль неверны") error = "Аккаунт не найден";
+                }
+            })
+            if(obj){
+                res.json(obj).status(200)
+            } else{
+                res.json({
+                    message: error,
+                    status: 404,
+
+                }).status(404)
+            }
         })
         .catch((error) => {
             res.send(error);
@@ -32,6 +53,12 @@ router.route('/').get((req, res) => {
         res.status(403).send("Invalid Api Key");
     }else if(!req.query.key){
         res.status(403).send("Api Key is required")
+    }else if(!req.query.login && !req.query.password){
+        res.status(400).send("Missing data")
+    }else if(req.query.login && !req.query.password){
+        res.status(400).send("Missing password")
+    }else if(!req.query.login && req.query.password){
+        res.status(400).send("Missing login");
     }
 }).post((req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -119,10 +146,15 @@ router.route('/doctors/:type').get((req, res) => {
                     result.push(user);
                 }
             })
+            
             res.send(result).status(200)
         })
-        .catch((error) => {
-            res.send(error);
+        .catch(error=> {
+            res.json({
+                message: error.message,
+                status: 500,
+            }).status(500);
+            console.log("yes")
         })
     } else if(req.query.key !== process.env.API_KEY){
         res.status(403).send("Invalid Api Key");
