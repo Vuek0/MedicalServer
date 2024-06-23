@@ -96,11 +96,25 @@ router.route('/').get(async (req, res) => {
         res.status(403).send("Api Key is required")
     }
     
-}).put((req, res) => {
+}).put(async (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     const {password, _id} = req.body;
     if(req.query.key === process.env.API_KEY && password && _id){
-        User.findByIdAndUpdate(_id)
+        try{
+            const updated = await User.findByIdAndUpdate(_id, { password : md5(password).toString() }, { new : true});
+            res.json({
+                status: 200,
+                response: "Account updated succesfull",
+                data: updated,
+            }).status(200);
+        } catch(err){
+            res.json({
+                status: 404,
+                error: err,
+                message: "Something happened"
+            }).status(404);
+        }
+        
     }else if(req.query.key !== process.env.API_KEY){
         res.status(403).send("Invalid Api Key");
     }else{
@@ -112,7 +126,7 @@ router.route('/').get(async (req, res) => {
     if(req.query.key === process.env.API_KEY){
         try{
 
-            const deletedItem = await User.findByIdAndDelete(_id);
+            const deletedItem = await User.deleteOne({_id : _id});
             res.json({
                 status: 200,
                 response: "Account removed succesfull",
@@ -159,5 +173,7 @@ router.route('/doctors/:type').get((req, res) => {
         res.status(403).send("Api Key is required")
     }
 })
-  
+
+console.log(md5("123321").toString());
+
 module.exports = router;
