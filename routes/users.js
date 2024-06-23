@@ -17,9 +17,16 @@ mongoose.connect(db)
     console.log(err)
 });
 
-router.route('/').get((req, res) => {
+router.route('/').get(async (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
-    if(req.query.key === process.env.API_KEY && req.query.login && req.query.password){
+    if(req.query.key === process.env.API_KEY && req.query._id){
+        const user = await User.findById(req.query._id).exec()
+        res.json(await User.findById(req.query._id).exec());
+        console.log(user)
+    }
+    else if(req.query.key === process.env.API_KEY 
+        && req.query.login 
+        && req.query.password){
         let error;
         User
         .find()
@@ -42,7 +49,6 @@ router.route('/').get((req, res) => {
                 res.json({
                     message: error,
                     status: 404,
-
                 })
             }
         })
@@ -94,16 +100,7 @@ router.route('/').get((req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     const {password, _id} = req.body;
     if(req.query.key === process.env.API_KEY && password && _id){
-        
-        User
-        .findByIdAndUpdate(_id, { password : password }, (err, docs)=>{
-            if(err){
-                res.send(err).status(404);
-            } else{
-                res.send(docs).status(200);
-            }
-        })
-        
+        User.findByIdAndUpdate(_id)
     }else if(req.query.key !== process.env.API_KEY){
         res.status(403).send("Invalid Api Key");
     }else{
@@ -115,7 +112,7 @@ router.route('/').get((req, res) => {
     if(req.query.key === process.env.API_KEY){
         try{
 
-            const deletedItem = await User.findByIdAndDelete(mongoose.Types.ObjectId(_id));
+            const deletedItem = await User.findByIdAndDelete(_id);
             res.json({
                 status: 200,
                 response: "Account removed succesfull",
