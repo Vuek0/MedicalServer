@@ -11,11 +11,19 @@ const visitSchema = new Schema(
         type: String,
         required: true,
     },
-    diagnos: {
+    diagnose: {
+        type: String,
+        required: true,
+    },
+    treatment: {
         type: String,
         required: true,
     },
     result: {
+        type: String,
+        required: true,
+    },
+    status: {
         type: String,
         required: true,
     },
