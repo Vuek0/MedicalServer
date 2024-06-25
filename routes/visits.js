@@ -135,7 +135,7 @@ router.route('/referrals').get((req, res) => {
                 visits.forEach(item => {
                     if(item.referral.length > 0){
                         item.referral.forEach(referr => {
-                            if(referr.pacient === req.query.pacientId){
+                            if(referr.pacient._id === req.query.pacientId){
                                 result.push(referr);
                             }
                         })
