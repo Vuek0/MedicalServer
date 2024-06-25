@@ -20,30 +20,28 @@ mongoose.connect(db)
 router.route('/').get((req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     if(req.query.key === process.env.API_KEY){
-        if(req.query.pacientId){
-            Visit
-            .find()
-            .then(visits => {
-                const arr = [];
-                visits.forEach(visit => {
-                    if(visit.pacient._id === req.query.pacientId && req.query.notDone && visit.status == "Не завершён"){
-                        arr.push(visit);
-                    }
-
-                    if(visit.pacient.id === req.query.pacientId && !req.query.notDone){
-                        arr.push(visit);
-                    }
-                })
-                if(arr.length > 0){
-                    res.json(arr).status(200);
-                } else{
-                    res.json({
-                        message: "Ничего не найдено",
-                        status: 204,
-                    }).status(204);
+        Visit
+        .find()
+        .then(visits => {
+            const arr = [];
+            visits.forEach(visit => {
+                if(visit.pacient._id === req.query.pacientId && req.query.notDone && visit.status == "Не завершён"){
+                    arr.push(visit);
+                } else if(visit.pacient.id === req.query.pacientId && !req.query.notDone){
+                    arr.push(visit);
+                } else if(!req.query.pacientId){
+                    arr.push(visit);
                 }
             })
-        }
+            if(arr.length > 0){
+                res.json(arr).status(200);
+            } else{
+                res.json({
+                    message: "Ничего не найдено",
+                    status: 204,
+                }).status(204);
+            }
+        })
     }else if(req.query.key && req.query.key !== process.env.API_KEY){
         res.status(403).send("Invalid Api Key");
     }else if(!req.query.key){
