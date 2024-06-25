@@ -4,10 +4,18 @@ const Schema = mongoose.Schema;
 const visitSchema = new Schema(
   {
     doctor: {
-        type: String,
+        type: Object,
         required: true,
     },
     pacient: {
+        type: Object,
+        required: true,
+    },
+    date: {
+        type: String,
+        required: true,
+    },
+    time: {
         type: String,
         required: true,
     },
@@ -16,10 +24,6 @@ const visitSchema = new Schema(
         required: true,
     },
     treatment: {
-        type: String,
-        required: true,
-    },
-    result: {
         type: String,
         required: true,
     },
