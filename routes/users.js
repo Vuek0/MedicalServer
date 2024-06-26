@@ -97,7 +97,15 @@ router
           if (isAllow) {
             const user = new User({ name, surname, login, password, type });
             user.password = md5(user.password).toString();
-            user.save().then((result) => res.send(result));
+            user.save().then((result) =>
+              res
+                .json({
+                  data: result,
+                  status: 200,
+                  message: "Аккаунт успешно создан",
+                })
+                .status(200)
+            );
           }
         })
         .catch((error) => {
