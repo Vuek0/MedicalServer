@@ -22,7 +22,10 @@ mongoose
 router
   .route("/")
   .get((req, res) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader(
+      "Access-Control-Allow-Origin",
+      "https://medical-website-tawny.vercel.app/"
+    );
     if (req.query.key === process.env.API_KEY) {
       Visit.find().then((visits) => {
         const arr = [];
@@ -75,7 +78,10 @@ router
     }
   })
   .post((req, res) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader(
+      "Access-Control-Allow-Origin",
+      "https://medical-website-tawny.vercel.app/"
+    );
     const { doctor, pacient, date, time } = req.body;
     const diagnose = " ";
     const treatment = " ";
@@ -118,10 +124,13 @@ router
     }
   })
   .put(async (req, res) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader(
+      "Access-Control-Allow-Origin",
+      "https://medical-website-tawny.vercel.app/"
+    );
     const { _id, diagnose, treatment, referral, status } = req.body;
     if (
-      (req.query.key === process.env.API_KEY && password && _id,
+      (req.query.key === process.env.API_KEY && _id,
       diagnose,
       treatment,
       referral,
@@ -157,7 +166,7 @@ router
     }
   });
 // .delete(async (req, res) => {
-//     res.setHeader("Access-Control-Allow-Origin", "*");
+//     res.setHeader("Access-Control-Allow-Origin", "https://medical-website-tawny.vercel.app/");
 //     const {_id} = req.body;
 //     if(req.query.key === process.env.API_KEY){
 
@@ -169,7 +178,10 @@ router
 // })
 
 router.route("/referrals").get((req, res) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    "https://medical-website-tawny.vercel.app/"
+  );
   if (req.query.key === process.env.API_KEY) {
     if (req.query.pacientId) {
       const result = [];
