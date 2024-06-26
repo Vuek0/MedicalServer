@@ -25,6 +25,11 @@ router.route('/').get((req, res) => {
         .then(visits => {
             const arr = [];
             visits.forEach(visit => {
+                if(!req.query.notDone){
+                    if(visit.pacient._id === req.query.pacientId){
+                        arr.push(visit);
+                    }
+                }
                 if(visit.pacient._id === req.query.pacientId && req.query.notDone && visit.status == "Не завершён"){
                     arr.push(visit);
                 } else if(visit.pacient.id === req.query.pacientId && !req.query.notDone){
