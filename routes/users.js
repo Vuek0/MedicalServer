@@ -119,21 +119,47 @@ router
   })
   .put(async (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
-    const { password, _id } = req.body;
-    if (req.query.key === process.env.API_KEY && password && _id) {
+    const { name, surname, login, password, type, _id } = req.body;
+    if (req.query.key === process.env.API_KEY && _id) {
       try {
-        const updated = await User.findByIdAndUpdate(
-          _id,
-          { password: md5(password).toString() },
-          { new: true }
-        );
-        res
-          .json({
-            status: 200,
-            response: "Account updated succesfull",
-            data: updated,
-          })
-          .status(200);
+        if (password) {
+          const updated = await User.findByIdAndUpdate(
+            _id,
+            {
+              name: name,
+              surname: surname,
+              login: login,
+              type: type,
+              password: md5(password).toString(),
+            },
+            { new: true }
+          );
+          res
+            .json({
+              status: 200,
+              response: "Account updated succesfull",
+              data: updated,
+            })
+            .status(200);
+        } else {
+          const updated = await User.findByIdAndUpdate(
+            _id,
+            {
+              name: name,
+              surname: surname,
+              login: login,
+              type: type,
+            },
+            { new: true }
+          );
+          res
+            .json({
+              status: 200,
+              response: "Account updated succesfull",
+              data: updated,
+            })
+            .status(200);
+        }
       } catch (err) {
         res
           .json({
