@@ -27,29 +27,29 @@ router
       Visit.find().then((visits) => {
         const arr = [];
         visits.forEach((visit) => {
-          if (!req.query.notDone) {
-            if (visit.pacient._id === req.query.pacientId) {
-              arr.push(visit);
-            }
-          }
-
           if (req.query.doctorId && visit.doctor._id === req.query.doctorId) {
             arr.push(visit);
-          }
+          } else {
+            if (!req.query.notDone) {
+              if (visit.pacient._id === req.query.pacientId) {
+                arr.push(visit);
+              }
+            }
 
-          if (
-            visit.pacient._id === req.query.pacientId &&
-            req.query.notDone &&
-            visit.status == "Не завершён"
-          ) {
-            arr.push(visit);
-          } else if (
-            visit.pacient.id === req.query.pacientId &&
-            !req.query.notDone
-          ) {
-            arr.push(visit);
-          } else if (!req.query.pacientId) {
-            arr.push(visit);
+            if (
+              visit.pacient._id === req.query.pacientId &&
+              req.query.notDone &&
+              visit.status == "Не завершён"
+            ) {
+              arr.push(visit);
+            } else if (
+              visit.pacient.id === req.query.pacientId &&
+              !req.query.notDone
+            ) {
+              arr.push(visit);
+            } else if (!req.query.pacientId) {
+              arr.push(visit);
+            }
           }
         });
         if (arr.length > 0) {
