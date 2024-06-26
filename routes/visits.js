@@ -26,10 +26,14 @@ router
     if (req.query.key === process.env.API_KEY) {
       Visit.find().then((visits) => {
         const arr = [];
-        visits.forEach((visit) => {
-          if (req.query.doctorId && visit.doctor._id === req.query.doctorId) {
-            arr.push(visit);
-          } else {
+        if (req.query.doctorId) {
+          visits.forEach((visit) => {
+            if (visit.doctor._id === req.query.doctorId) {
+              arr.push(visit);
+            }
+          });
+        } else {
+          visits.forEach((visit) => {
             if (!req.query.notDone) {
               if (visit.pacient._id === req.query.pacientId) {
                 arr.push(visit);
@@ -50,8 +54,9 @@ router
             } else if (!req.query.pacientId) {
               arr.push(visit);
             }
-          }
-        });
+          });
+        }
+
         if (arr.length > 0) {
           res.json(arr).status(200);
         } else {
