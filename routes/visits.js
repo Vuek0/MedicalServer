@@ -127,6 +127,12 @@ router
       referral,
       status)
     ) {
+      let toSendStatus;
+      if (status) {
+        toSendStatus = "Завершён";
+      } else {
+        toSendStatus = "Не завершён";
+      }
       try {
         const updated = await Visit.findByIdAndUpdate(
           _id,
@@ -134,7 +140,7 @@ router
             diagnose: diagnose,
             treatment: treatment,
             referral: referral,
-            status: status,
+            status: toSendStatus,
           },
           { new: true }
         );
