@@ -124,8 +124,7 @@ router
       (req.query.key === process.env.API_KEY && _id,
       diagnose,
       treatment,
-      referral,
-      status)
+      referral)
     ) {
       let toSendStatus;
       if (status) {
