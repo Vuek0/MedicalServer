@@ -128,12 +128,16 @@ router
       status)
     ) {
       try {
-        const updated = await Visit.findByIdAndDelete(_id, {
-          diagnose: diagnose,
-          treatment: treatment,
-          referral: referral,
-          status: status,
-        });
+        const updated = await Visit.findByIdAndUpdate(
+          _id,
+          {
+            diagnose: diagnose,
+            treatment: treatment,
+            referral: referral,
+            status: status,
+          },
+          { new: true }
+        );
         res
           .json({
             status: 200,
